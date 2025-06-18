@@ -107,4 +107,9 @@ public class UserController {
                                                @RequestParam("status") Users.Status status){
         return ResponseEntity.ok(userService.changeUserStatus(userId, status));
     }
+
+    @GetMapping("/api/admin/users/review-status")
+    public ResponseEntity<?> adminGetStatusReview(){
+        return ResponseEntity.ok(userService.adminGetUserReview());
+    }
 }

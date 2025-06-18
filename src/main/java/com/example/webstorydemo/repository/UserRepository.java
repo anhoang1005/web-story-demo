@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,4 +33,14 @@ public interface UserRepository extends JpaRepository<Users, Long> {
                                  @Param("role") Roles role,
                                  @Param("status") Users.Status status,
                                  Pageable pageable);
+
+    @Query("""
+        SELECT 
+            SUM(CASE WHEN u.status = 'NORMAL' THEN 1 ELSE 0 END),
+            SUM(CASE WHEN u.status = 'VERIFY' THEN 1 ELSE 0 END),
+            SUM(CASE WHEN u.status = 'BLOCK' THEN 1 ELSE 0 END),
+            SUM(CASE WHEN u.status = 'DELETE' THEN 1 ELSE 0 END)
+        FROM Users u
+    """)
+    List<Object[]> countAllStatuses();
 }

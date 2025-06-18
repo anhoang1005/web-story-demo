@@ -32,7 +32,7 @@ public class ExceptionHandlerCustom extends ResponseEntityExceptionHandler {
                 null,
                 ResponseBody.Status.SUCCESS,
                 "INVALID_ACCOUNT",
-                ResponseBody.Code.UNAUTHORIZED_REQUEST
+                ResponseBody.Code.SUCCESS
         );
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class ExceptionHandlerCustom extends ResponseEntityExceptionHandler {
                 null,
                 ResponseBody.Status.SUCCESS,
                 "LOCKED_ACCOUNT",
-                ResponseBody.Code.UNAUTHORIZED_REQUEST
+                ResponseBody.Code.SUCCESS
         );
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }

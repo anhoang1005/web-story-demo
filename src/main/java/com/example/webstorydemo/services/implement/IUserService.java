@@ -12,6 +12,7 @@ import com.example.webstorydemo.model.payload.PageData;
 import com.example.webstorydemo.model.payload.ResponseBody;
 import com.example.webstorydemo.model.user.UserDto;
 import com.example.webstorydemo.model.user.UserRegisterRequest;
+import com.example.webstorydemo.model.user.UserStatusReview;
 import com.example.webstorydemo.repository.RoleRepository;
 import com.example.webstorydemo.repository.UserRepository;
 import com.example.webstorydemo.services.FileService;
@@ -350,6 +351,34 @@ public class IUserService implements UserService {
                     ResponseBody.Status.SUCCESS,
                     ResponseBody.Code.SUCCESS
             );
+        } catch (Exception e){
+            log.error("Get info error! Error " + e.getMessage());
+            throw new RequestNotFoundException("ERROR");
+        }
+    }
+
+    @Override
+    public ResponseBody<?> adminGetUserReview() {
+        try{
+            List<Object[]> objects = userRepository.countAllStatuses();
+            if (objects == null || objects.isEmpty()) {
+                throw new RequestNotFoundException("Dữ liệu không tồn tại");
+            }
+
+            Object[] row = objects.get(0); // Lấy dòng đầu tiên chứa các giá trị count
+
+            long normal = row[0] != null ? ((Number) row[0]).longValue() : 0L;
+            long verify = row[1] != null ? ((Number) row[1]).longValue() : 0L;
+            long block  = row[2] != null ? ((Number) row[2]).longValue() : 0L;
+            long delete = row[3] != null ? ((Number) row[3]).longValue() : 0L;
+
+            UserStatusReview review = UserStatusReview.builder()
+                    .normalCount(normal)
+                    .verifyCount(verify)
+                    .blockCount(block)
+                    .deleteCount(delete)
+                    .build();
+            return new ResponseBody<>(review);
         } catch (Exception e){
             log.error("Get info error! Error " + e.getMessage());
             throw new RequestNotFoundException("ERROR");

@@ -25,4 +25,6 @@ public interface UserService {
     ResponseBody<?> usersChangeAvatar(MultipartFile file);
     ResponseBody<?> usersGetUsersDetail();
 
+    ResponseBody<?> adminGetUserReview();
+
 }
